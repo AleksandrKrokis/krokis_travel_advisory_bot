@@ -1,0 +1,46 @@
+name: Check Travel Advisories
+
+on:
+  schedule:
+    # Runs at 08:00 and 20:00 UTC daily
+    - cron: '0 8 * * *'
+    - cron: '0 20 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install httpx beautifulsoup4
+
+      - name: Restore state
+        uses: actions/cache@v4
+        with:
+          path: state.json
+          key: advisory-state-${{ github.run_id }}
+          restore-keys: advisory-state-
+
+      - name: Run check
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          MONITORED_COUNTRIES: ${{ vars.MONITORED_COUNTRIES }}
+        run: python check_advisories.py
+
+      - name: Commit state if changed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add state.json || true
+          git diff --staged --quiet || git commit -m "Update advisory state"
+          git push || true
