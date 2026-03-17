@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """
 Travel Advisory Monitor - runs via GitHub Actions (free)
-Checks U.S. State Department travel advisories and sends Telegram notifications.
+Uses official State Department API: https://cadataapi.state.gov/api/TravelAdvisories
 """
 
 import json
 import os
+import re
 import sys
 from datetime import datetime
 from pathlib import Path
 
 import httpx
-from bs4 import BeautifulSoup
 
 # Configuration from environment / GitHub Secrets
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -21,49 +21,35 @@ TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 # Example: "Russia,Ukraine,Israel,China,Belarus"
 MONITORED_COUNTRIES = [c.strip() for c in os.getenv("MONITORED_COUNTRIES", "").split(",") if c.strip()]
 
-TRAVEL_URL = "https://travel.state.gov/content/travel/en/traveladvisories/traveladvisories.html"
+API_URL = "https://cadataapi.state.gov/api/TravelAdvisories"
 STATE_FILE = Path(__file__).parent / "state.json"
 
 LEVEL_EMOJIS = {"1": "🟢", "2": "🟡", "3": "🟠", "4": "🔴"}
 
 
 def fetch_advisories() -> dict[str, dict]:
-    """Fetch current travel advisories from travel.state.gov"""
+    """Fetch current travel advisories from State Department API"""
     advisories = {}
 
-    response = httpx.get(TRAVEL_URL, follow_redirects=True, timeout=30.0)
+    response = httpx.get(API_URL, timeout=30.0)
     response.raise_for_status()
+    data = response.json()
 
-    soup = BeautifulSoup(response.text, "html.parser")
-
-    # Find advisory table
-    table = soup.find("table", class_="table-data") or soup.find("table")
-    if not table:
-        print("ERROR: Could not find advisory table")
-        return advisories
-
-    for row in table.find_all("tr")[1:]:  # Skip header
-        cells = row.find_all("td")
-        if len(cells) >= 2:
-            # Country name
-            country_cell = cells[0]
-            link = country_cell.find("a")
-            country = link.get_text(strip=True) if link else country_cell.get_text(strip=True)
-
-            # Advisory level
-            level_text = cells[1].get_text(strip=True)
-            level = "".join(c for c in level_text if c.isdigit())[:1] or "0"
-
-            # Date (if exists)
-            date = cells[2].get_text(strip=True) if len(cells) > 2 else ""
-
+    for item in data:
+        title = item.get("Title", "")
+        # Parse: "Afghanistan - Level 4: Do Not Travel"
+        match = re.match(r"(.+?)\s*-\s*Level\s*(\d)", title)
+        if match:
+            country = match.group(1).strip()
+            level = match.group(2)
             advisories[country] = {
                 "level": level,
-                "text": level_text,
-                "date": date
+                "title": title,
+                "updated": item.get("Updated", ""),
+                "link": item.get("Link", "")
             }
 
-    print(f"Fetched {len(advisories)} advisories")
+    print(f"Fetched {len(advisories)} advisories from API")
     return advisories
 
 
@@ -101,7 +87,7 @@ def find_changes(old: dict, new: dict) -> list[dict]:
                 "type": "new",
                 "country": country,
                 "level": data["level"],
-                "text": data["text"]
+                "title": data["title"]
             })
         elif data["level"] != old_data.get("level"):
             changes.append({
@@ -109,7 +95,7 @@ def find_changes(old: dict, new: dict) -> list[dict]:
                 "country": country,
                 "old_level": old_data["level"],
                 "new_level": data["level"],
-                "text": data["text"]
+                "title": data["title"]
             })
 
     # Check removed
@@ -200,16 +186,33 @@ def main():
         else:
             print("No changes detected")
     else:
-        print("First run - initializing state")
-        # Send initial status for monitored countries
+        print("First run - sending confirmation message")
+        # Send confirmation that bot is working
+        total = len(current)
+        level4 = sum(1 for d in current.values() if d["level"] == "4")
+        level3 = sum(1 for d in current.values() if d["level"] == "3")
+
+        lines = [
+            "✅ <b>Travel Advisory Bot Started</b>\n",
+            f"📊 Tracking {total} countries:",
+            f"   🔴 Level 4 (Do Not Travel): {level4}",
+            f"   🟠 Level 3 (Reconsider): {level3}",
+        ]
+
         if MONITORED_COUNTRIES:
-            lines = ["📋 <b>Initial Advisory Status</b>\n"]
+            lines.append(f"\n🎯 <b>Monitoring:</b> {', '.join(MONITORED_COUNTRIES)}")
+            lines.append("\nCurrent status:")
             for country, data in sorted(current.items()):
                 if should_monitor(country):
                     emoji = LEVEL_EMOJIS.get(data["level"], "⚪")
-                    lines.append(f"{emoji} <b>{country}</b>: Level {data['level']}")
-            lines.append(f"\n<i>Bot started {datetime.utcnow().strftime('%Y-%m-%d %H:%M')} UTC</i>")
-            send_telegram("\n".join(lines))
+                    lines.append(f"   {emoji} {country}: Level {data['level']}")
+        else:
+            lines.append("\n🎯 Monitoring: ALL countries")
+
+        lines.append(f"\n<i>Started {datetime.utcnow().strftime('%Y-%m-%d %H:%M')} UTC</i>")
+        lines.append("You'll receive alerts when levels change.")
+
+        send_telegram("\n".join(lines))
 
     # Save current state
     save_state(current)

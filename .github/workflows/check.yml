@@ -21,7 +21,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install httpx beautifulsoup4
+        run: pip install httpx
 
       - name: Restore state
         uses: actions/cache@v4
