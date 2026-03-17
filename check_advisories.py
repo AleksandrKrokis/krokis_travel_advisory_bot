@@ -15,7 +15,8 @@ import httpx
 
 # Configuration from environment / GitHub Secrets
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+# Multiple chat IDs supported, comma-separated: "123456789,-1001234567890"
+TELEGRAM_CHAT_IDS = [c.strip() for c in os.getenv("TELEGRAM_CHAT_ID", "").split(",") if c.strip()]
 
 # Countries to monitor (comma-separated in env, or empty for all)
 # Example: "Russia,Ukraine,Israel,China,Belarus"
@@ -141,23 +142,25 @@ def format_message(changes: list[dict]) -> str:
 
 
 def send_telegram(message: str) -> None:
-    """Send message via Telegram"""
-    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+    """Send message via Telegram to all configured chats"""
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_IDS:
         print("ERROR: Telegram credentials not set")
         return
 
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    response = httpx.post(url, json={
-        "chat_id": TELEGRAM_CHAT_ID,
-        "text": message,
-        "parse_mode": "HTML",
-        "disable_web_page_preview": True
-    })
 
-    if response.status_code == 200:
-        print("Telegram message sent")
-    else:
-        print(f"Telegram error: {response.text}")
+    for chat_id in TELEGRAM_CHAT_IDS:
+        response = httpx.post(url, json={
+            "chat_id": chat_id,
+            "text": message,
+            "parse_mode": "HTML",
+            "disable_web_page_preview": True
+        })
+
+        if response.status_code == 200:
+            print(f"Message sent to {chat_id}")
+        else:
+            print(f"Telegram error for {chat_id}: {response.text}")
 
 
 def main():
