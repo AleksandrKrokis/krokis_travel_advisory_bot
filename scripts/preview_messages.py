@@ -10,7 +10,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from bot import messages  # noqa: E402
 from bot.config import LEAVE, PREPARE, WATCH  # noqa: E402
-from bot.sources import ALL_SOURCES  # noqa: E402
 
 NOW = datetime(2026, 10, 26, 6, 17, tzinfo=timezone.utc)
 
@@ -67,7 +66,7 @@ events = [
      "detail": "Finnish police investigate damage to Gulf of Finland data cable"},
 ]
 show("6. Еженедельная сводка (понедельник, ~09:17 по Таллинну)",
-     messages.digest("weekly", 0, [], events, ALL_SOURCES, sst, NOW))
+     messages.digest("weekly", 0, [], events, sst, NOW))
 show("7. Админ-чат: источник не отвечает (в канал не уходит)",
      messages.source_failed("EASA: бюллетени о зонах конфликта", "RuntimeError: no CZIB rows parsed",
                             datetime(2026, 10, 25, 18, 17, tzinfo=timezone.utc)))

@@ -199,4 +199,4 @@ class Engine:
         days = 7 if kind == "weekly" else 1
         cutoff = self.now - timedelta(days=days)
         events = [e for e in self.st["log"] if _ts(e["ts"]) >= cutoff]
-        self.channel.append(messages.digest(kind, level, active, events, self.sources, self.st["sources"], self.now))
+        self.channel.append(messages.digest(kind, level, active, events, self.st["sources"], self.now))

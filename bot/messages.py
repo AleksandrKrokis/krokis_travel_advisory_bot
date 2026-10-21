@@ -65,8 +65,7 @@ def new_signals(new: list[dict], level: int, now: datetime) -> str:
     return _clip("\n".join(lines))
 
 
-def digest(kind: str, level: int, active: list[dict], events: list[dict], sources: list, sst: dict,
-           now: datetime) -> str:
+def digest(kind: str, level: int, active: list[dict], events: list[dict], sst: dict, now: datetime) -> str:
     title = "📋 <b>Еженедельная сводка</b>" if kind == "weekly" else "📋 <b>Ежедневная сводка</b>"
     lines = [title, f"Уровень угрозы: {_level(level)}", f"<i>{LEVEL_ADVICE[level]}</i>", ""]
 
@@ -90,11 +89,6 @@ def digest(kind: str, level: int, active: list[dict], events: list[dict], source
         if d:
             lines += [header] + d + [""]
 
-    failing = [src.title for src in sources if sst.get(src.name, {}).get("fail_since")]
-    if failing:
-        lines.append(f"⚙️ Не отвечают: {escape(', '.join(failing))}")
-    else:
-        lines.append(f"⚙️ Все источники работают ({len(sources)})")
     lines.append(_when(now))
     return _clip("\n".join(lines))
 
