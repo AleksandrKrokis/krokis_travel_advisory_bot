@@ -2,14 +2,30 @@ name: Check Travel Advisories
 
 on:
   schedule:
-    # Runs at 08:00 and 20:00 UTC daily
-    - cron: '0 8 * * *'
-    - cron: '0 20 * * *'
-  workflow_dispatch:  # Allow manual trigger
+    # Every hour at :17 (off-peak minute: GitHub delays jobs scheduled at :00).
+    # Each source has its own interval inside the bot (1-6 h).
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run: print messages to the log, send nothing, keep state unchanged'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write   # push state to the bot-state branch
+  actions: write    # keepalive: re-enable this workflow (GitHub disables idle schedules after 60 days)
+
+concurrency:
+  group: travel-advisory
+  cancel-in-progress: false
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && '1' || '' }}
 
     steps:
       - name: Checkout
@@ -19,28 +35,50 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: pip
 
       - name: Install dependencies
-        run: pip install httpx
+        run: pip install -r requirements.txt
 
-      - name: Restore state
-        uses: actions/cache@v4
-        with:
-          path: state.json
-          key: advisory-state-${{ github.run_id }}
-          restore-keys: advisory-state-
+      - name: Load state
+        run: |
+          mkdir -p state
+          if git fetch -q --depth=1 origin bot-state 2>/dev/null; then
+            git show FETCH_HEAD:state.json > state/state.json
+            echo "State loaded"
+          else
+            echo "No bot-state branch yet: first run, all sources will baseline silently"
+          fi
 
       - name: Run check
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          MONITORED_COUNTRIES: ${{ vars.MONITORED_COUNTRIES }}
+          TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
+          STATE_FILE: state/state.json
         run: python check_advisories.py
 
-      - name: Commit state if changed
+      - name: Save state
+        if: env.DRY_RUN != '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          [ -f state/state.json ] || exit 0
+          dir="$RUNNER_TEMP/bot-state"
+          rm -rf "$dir" && mkdir -p "$dir" && cd "$dir"
+          git init -q -b bot-state
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add state.json || true
-          git diff --staged --quiet || git commit -m "Update advisory state"
-          git push || true
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          if git fetch -q --depth=1 origin bot-state 2>/dev/null; then git reset -q --soft FETCH_HEAD; fi
+          cp "$GITHUB_WORKSPACE/state/state.json" state.json
+          git add state.json
+          git diff --cached --quiet && { echo "State unchanged"; exit 0; }
+          git commit -qm "state $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push -q origin HEAD:bot-state
+
+      - name: Keepalive
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/check.yml/enable" || true
