@@ -1,0 +1,393 @@
+{
+ "digest": {
+  "daily": "2026-10-21",
+  "weekly": "2026-W43"
+ },
+ "expired": [],
+ "level": {
+  "current": 0,
+  "lower_since": null,
+  "since": "2026-10-21T18:40:13.552163+00:00"
+ },
+ "log": [],
+ "resolved": {},
+ "signals": {},
+ "sources": {
+  "aa": {
+   "data": {},
+   "digest": [],
+   "initialized": true,
+   "last_ok": "2026-10-21T18:40:13.552163+00:00",
+   "last_run": "2026-10-21T18:40:13.552163+00:00"
+  },
+  "canada": {
+   "data": {},
+   "digest": [],
+   "initialized": true,
+   "last_ok": "2026-10-21T18:40:13.552163+00:00",
+   "last_run": "2026-10-21T18:40:13.552163+00:00"
+  },
+  "czib": {
+   "data": {},
+   "digest": [],
+   "initialized": true,
+   "last_ok": "2026-10-21T18:40:13.552163+00:00",
+   "last_run": "2026-10-21T18:40:13.552163+00:00"
+  },
+  "embassy": {
+   "data": {},
+   "digest": [],
+   "initialized": true,
+   "last_ok": "2026-10-21T18:40:13.552163+00:00",
+   "last_run": "2026-10-21T18:40:13.552163+00:00"
+  },
+  "faa": {
+   "data": {},
+   "digest": [],
+   "initialized": true,
+   "last_ok": "2026-10-21T18:40:13.552163+00:00",
+   "last_run": "2026-10-21T18:40:13.552163+00:00"
+  },
+  "fcdo": {
+   "data": {},
+   "digest": [],
+   "initialized": true,
+   "last_ok": "2026-10-21T18:40:13.552163+00:00",
+   "last_run": "2026-10-21T18:40:13.552163+00:00"
+  },
+  "ferries": {
+   "data": {
+    "tal-hel": [
+     {
+      "avail": 1.0,
+      "price": 22.3
+     }
+    ],
+    "tal-hel:streak": 0,
+    "tal-sto": [
+     {
+      "avail": 1.0,
+      "price": 87.8
+     }
+    ],
+    "tal-sto:streak": 0
+   },
+   "digest": [
+    "• Таллинн → Хельсинки: свободно 100% рейсов на 48 ч, от 22 €",
+    "• Таллинн → Стокгольм: свободно 100% рейсов на 48 ч, от 88 €"
+   ],
+   "initialized": true,
+   "last_ok": "2026-10-21T18:40:13.552163+00:00",
+   "last_run": "2026-10-21T18:40:13.552163+00:00"
+  },
+  "gdelt": {
+   "data": {},
+   "error": "HTTPStatusError: HTTP 429",
+   "fail_since": "2026-10-21T18:40:13.552163+00:00",
+   "initialized": false,
+   "last_run": "2026-10-21T18:40:13.552163+00:00"
+  },
+  "news": {
+   "data": {
+    "cat_last": {},
+    "decisive": {},
+    "seen": [
+     "https://news.err.ee/1610172346",
+     "https://news.err.ee/1610172253",
+     "https://news.err.ee/1610172241",
+     "https://news.err.ee/1610172235",
+     "https://news.err.ee/1610172115",
+     "https://news.err.ee/1610172076",
+     "https://news.err.ee/1610172070",
+     "https://news.err.ee/1610172037",
+     "https://news.err.ee/1610172028",
+     "https://news.err.ee/1610172082",
+     "https://news.err.ee/1610171971",
+     "https://news.err.ee/1610171962",
+     "https://news.err.ee/1610171953",
+     "https://news.err.ee/1610171911",
+     "https://news.err.ee/1610171503",
+     "https://news.err.ee/1610171383",
+     "https://news.err.ee/1610171887",
+     "https://news.err.ee/1610171377",
+     "https://news.err.ee/1610171407",
+     "https://news.err.ee/1610171842",
+     "https://news.err.ee/1610171317",
+     "https://news.err.ee/1610171494",
+     "https://news.err.ee/1610171368",
+     "https://news.err.ee/1610171326",
+     "https://news.err.ee/1610171476",
+     "https://news.err.ee/1610171152",
+     "https://news.err.ee/1610171047",
+     "https://news.err.ee/1610171179",
+     "https://news.err.ee/1610171257",
+     "https://news.err.ee/1610171155",
+     "https://news.err.ee/1610171134",
+     "https://news.err.ee/1610171125",
+     "https://news.err.ee/1610171059",
+     "https://news.err.ee/1610171062",
+     "https://news.err.ee/1610170966",
+     "https://news.err.ee/1610170483",
+     "https://news.err.ee/1610170960",
+     "https://news.err.ee/1610170996",
+     "https://news.err.ee/1610170387",
+     "https://news.err.ee/1610170906",
+     "https://news.err.ee/1610170891",
+     "https://news.err.ee/1610170501",
+     "https://news.err.ee/1610170432",
+     "https://news.err.ee/1610170369",
+     "https://news.err.ee/1610170327",
+     "https://news.err.ee/1610170285",
+     "https://news.err.ee/1610170234",
+     "https://news.err.ee/1610170126",
+     "https://news.err.ee/1610170105",
+     "https://news.err.ee/1610170084",
+     "https://sport.err.ee/1610172523",
+     "https://www.err.ee/1610172517",
+     "https://www.err.ee/1610172514",
+     "https://sport.err.ee/1610172511",
+     "https://www.err.ee/1610172307",
+     "https://sport.err.ee/1610172499",
+     "https://eeter.err.ee/1610172301",
+     "https://www.err.ee/1610172493",
+     "https://www.err.ee/1610172310",
+     "https://sport.err.ee/1610172481",
+     "https://www.err.ee/1610172292",
+     "https://www.err.ee/1610172469",
+     "https://www.err.ee/1610172397",
+     "https://sport.err.ee/1610172466",
+     "https://www.err.ee/1610172463",
+     "https://www.err.ee/1610172439",
+     "https://kultuur.err.ee/1610172409",
+     "https://sport.err.ee/1610172448",
+     "https://kultuur.err.ee/1610172445",
+     "https://www.err.ee/1610172250",
+     "https://www.err.ee/1610172437",
+     "https://www.err.ee/1610172430",
+     "https://www.err.ee/1610172421",
+     "https://sport.err.ee/1610172427",
+     "https://www.err.ee/1610172376",
+     "https://www.err.ee/1610172386",
+     "https://www.err.ee/1610172371",
+     "https://www.err.ee/1610172374",
+     "https://sport.err.ee/1610172370",
+     "https://www.err.ee/1610172368",
+     "https://www.err.ee/1610172460",
+     "https://sport.err.ee/1610171998",
+     "https://kultuur.err.ee/1610172262",
+     "https://www.err.ee/1610172355",
+     "https://www.err.ee/1610172349",
+     "https://sport.err.ee/1610172343",
+     "https://kultuur.err.ee/1610172337",
+     "https://kultuur.err.ee/1610172331",
+     "https://www.err.ee/1610172274",
+     "https://sport.err.ee/1610172304",
+     "https://kultuur.err.ee/1610172298",
+     "https://novaator.err.ee/1610172049",
+     "https://sport.err.ee/1610172244",
+     "https://www.err.ee/1610171770",
+     "https://www.err.ee/1610172257",
+     "https://kultuur.err.ee/1610172247",
+     "https://www.err.ee/1610172254",
+     "https://www.err.ee/1610172175",
+     "https://sport.err.ee/1610172214",
+     "https://www.err.ee/1610172220",
+     "https://rus.err.ee/1610172496",
+     "https://rus.err.ee/1610172487",
+     "https://rus.err.ee/1610172490",
+     "https://rus.err.ee/1610171875",
+     "https://rus.err.ee/1610172505",
+     "https://rus.err.ee/1610172484",
+     "https://rus.err.ee/1610172475",
+     "https://rus.err.ee/1610172139",
+     "https://rus.err.ee/1610172478",
+     "https://rus.err.ee/1610172259",
+     "https://rus.err.ee/1610172472",
+     "https://rus.err.ee/1610170264",
+     "https://rus.err.ee/1610172457",
+     "https://rus.err.ee/1610172454",
+     "https://rus.err.ee/1610172451",
+     "https://rus.err.ee/1610172424",
+     "https://rus.err.ee/1610172436",
+     "https://rus.err.ee/1610172433",
+     "https://rus.err.ee/1610172400",
+     "https://rus.err.ee/1610172406",
+     "https://rus.err.ee/1610172364",
+     "https://rus.err.ee/1610172361",
+     "https://rus.err.ee/1610172358",
+     "https://rus.err.ee/1610172328",
+     "https://rus.err.ee/1610172313",
+     "https://rus.err.ee/1610172316",
+     "https://rus.err.ee/1610172238",
+     "https://rus.err.ee/1610172229",
+     "https://rus.err.ee/1610172223",
+     "https://rus.err.ee/1610172232",
+     "https://rus.err.ee/1610172226",
+     "https://rus.err.ee/1610172211",
+     "https://rus.err.ee/1610172184",
+     "https://rus.err.ee/1610172199",
+     "https://rus.err.ee/1610172080",
+     "https://rus.err.ee/1610172181",
+     "https://rus.err.ee/1610172157",
+     "https://rus.err.ee/1610172133",
+     "https://rus.err.ee/1610172085",
+     "https://rus.err.ee/1610172124",
+     "https://rus.err.ee/1610172106",
+     "https://rus.err.ee/1610172103",
+     "https://rus.err.ee/1610172052",
+     "https://rus.err.ee/1610172088",
+     "https://rus.err.ee/1610171968",
+     "https://rus.err.ee/1610172061",
+     "https://rus.err.ee/1610172043",
+     "https://rus.err.ee/1610172040",
+     "https://rus.err.ee/1610171908",
+     "https://rus.err.ee/1610171974",
+     "pm#8568473",
+     "pm#8567114",
+     "pm#8563181",
+     "pm#8562986",
+     "pm#8561501",
+     "pm#8559595",
+     "pm#8559237",
+     "pm#8559081",
+     "pm#8558002",
+     "pm#8556957",
+     "pm#8556628",
+     "pm#8555621",
+     "pm#8555568",
+     "pm#8555027",
+     "pm#8554915",
+     "pm#8554383",
+     "pm#8554047",
+     "pm#8552343",
+     "pm#8552327",
+     "pm#8552154",
+     "pm#8551347",
+     "pm#8551201",
+     "pm#8550481",
+     "pm#8550060",
+     "pm#8547666",
+     "pm#8569013",
+     "pm#8569052",
+     "pm#8569054",
+     "pm#8569053",
+     "pm#8568732",
+     "pm#8568610",
+     "pm#8569026",
+     "pm#8568379",
+     "pm#8568890",
+     "pm#8567914",
+     "pm#8568953",
+     "pm#8568314",
+     "pm#8569020",
+     "pm#8568758",
+     "pm#8569001",
+     "pm#8568817",
+     "pm#8568987",
+     "pm#8568921",
+     "pm#8568818",
+     "pm#8568814",
+     "pm#8568617",
+     "pm#8567227",
+     "pm#8568750",
+     "pm#8568604",
+     "pm#8567801",
+     "pm#8568339",
+     "pm#8569017",
+     "pm#8569042",
+     "pm#8569038",
+     "pm#8568999",
+     "pm#8569018",
+     "pm#8569010",
+     "pm#8568986",
+     "pm#8569008",
+     "pm#8568998",
+     "pm#8568996",
+     "pm#8568990",
+     "pm#8568927",
+     "pm#8568961",
+     "pm#8568743",
+     "pm#8568891",
+     "pm#8568958",
+     "pm#8567464",
+     "pm#8568945",
+     "pm#8568943",
+     "pm#8568783",
+     "pm#8568905",
+     "pm#8568931",
+     "pm#8568919",
+     "pm#8568870"
+    ]
+   },
+   "digest": [],
+   "initialized": true,
+   "last_ok": "2026-10-21T18:40:13.552163+00:00",
+   "last_run": "2026-10-21T18:40:13.552163+00:00"
+  },
+  "opensky": {
+   "data": {
+    "ctl": {
+     "18": [
+      13
+     ]
+    },
+    "est": {
+     "18": [
+      8
+     ]
+    },
+    "low_runs": 0
+   },
+   "digest": [],
+   "initialized": true,
+   "last_ok": "2026-10-21T18:40:13.552163+00:00",
+   "last_run": "2026-10-21T18:40:13.552163+00:00"
+  },
+  "polymarket": {
+   "data": {
+    "history": {
+     "1090496": {
+      "2026-10-21": 0.27
+     },
+     "2264328": {
+      "2026-10-21": 0.155
+     },
+     "2749367": {
+      "2026-10-21": 0.045
+     },
+     "4713962": {
+      "2026-10-21": 0.095
+     },
+     "665243": {
+      "2026-10-21": 0.0445
+     }
+    },
+    "tiers": {
+     "article5": 0,
+     "ceasefire": 0,
+     "eu_action": 0,
+     "invade_nato": 0,
+     "nato_clash": 0
+    }
+   },
+   "digest": [
+    "• Россия нападёт на страну НАТО до 01.01.2027: <b>4.5%</b>",
+    "• Военные действия России против страны ЕС до 01.01.2027: <b>9.5%</b>",
+    "• Применение статьи 5 НАТО до 01.01.2027: <b>4.5%</b>",
+    "• Военное столкновение НАТО и России до 01.01.2027: <b>27.0%</b>",
+    "• Перемирие Россия–Украина до 31.12.2026: <b>15.5%</b>"
+   ],
+   "initialized": true,
+   "last_ok": "2026-10-21T18:40:13.552163+00:00",
+   "last_run": "2026-10-21T18:40:13.552163+00:00"
+  },
+  "us_state": {
+   "data": {},
+   "digest": [],
+   "initialized": true,
+   "last_ok": "2026-10-21T18:40:13.552163+00:00",
+   "last_run": "2026-10-21T18:40:13.552163+00:00"
+  }
+ },
+ "version": 2
+}
